@@ -1,0 +1,30 @@
+services:
+  desktop:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        APT_MIRROR: ${APT_MIRROR:-}
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-https://pypi.org/simple}
+    image: nekoworker:local
+    restart: unless-stopped
+    ports:
+      - "${NEKO_BIND:-127.0.0.1}:${NEKO_MCP_PORT:-8080}:8080"
+      - "${NEKO_BIND:-127.0.0.1}:${NEKO_DESKTOP_PORT:-6080}:6080"
+    environment:
+      NEKO_TOKEN: ${NEKO_TOKEN:?Run ./scripts/up.sh first}
+      NEKO_VNC_PASSWORD: ${NEKO_VNC_PASSWORD:?Run ./scripts/up.sh first}
+      NEKO_RESOLUTION: ${NEKO_RESOLUTION:-1440x900}
+    volumes:
+      - desktop-home:/home/agent
+      - workspace:/workspace
+    shm_size: 1gb
+    mem_limit: ${NEKO_MEMORY:-4g}
+    cpus: ${NEKO_CPUS:-2}
+    pids_limit: 512
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+volumes:
+  desktop-home:
+  workspace:

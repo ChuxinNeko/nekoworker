@@ -1,0 +1,10 @@
+{
+  "policies": {
+    "Preferences": {
+      "accessibility.force_disabled": {"Value": -1, "Status": "locked"}
+    },
+    "OverrideFirstRunPage": "",
+    "OverridePostUpdatePage": "",
+    "DontCheckDefaultBrowser": true
+  }
+}
